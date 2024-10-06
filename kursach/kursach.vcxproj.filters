@@ -29,16 +29,19 @@
     <ClInclude Include="player.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Ball.h">
+    <ClInclude Include="ball.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="settings.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="game.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
+    <ClInclude Include="collision.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="temp.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
