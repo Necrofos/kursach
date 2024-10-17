@@ -21,8 +21,8 @@ const sf::Color color1 = sf::Color::Blue;
 const sf::Color color2 = sf::Color::Green;
 
 
-const float GRAVITY = 981.f;
-const float ENERGY_LOSS = 0.8f;
+const float GRAVITY = 983.f;
+const float ENERGY_LOSS = 0.7f;
 
 
 const float GOAL_WIDTH = 100.f;

@@ -1,34 +1,26 @@
-#ifndef COLLISION_H
-#define COLLISION_H
 #pragma once
 
 #include <SFML/Graphics.hpp>
 #include "settings.h"
 #include "ball.h"
 #include "player.h"
+#include <iostream>
 
-// Проверка столкновения мяча с игроком
 bool isBallCollidingWithPlayer(const Ball& ball, const Player& player) {
-    // Определяем центры мяча и игрока
     sf::Vector2f ballCenter = ball.shape.getPosition() + sf::Vector2f(BALL_RADIUS, BALL_RADIUS);
     sf::Vector2f playerCenter = player.shape.getPosition() + sf::Vector2f(PLAYER_RADIUS, PLAYER_RADIUS);
 
-    // Вычисляем разницу по координатам
     float dx = ballCenter.x - playerCenter.x;
     float dy = ballCenter.y - playerCenter.y;
 
-    // Вычисляем расстояние между центрами
-    float distanceSquared = dx * dx + dy * dy; // Не берем корень, чтобы избежать лишних вычислений
+    float distanceSquared = dx * dx + dy * dy; 
 
-    // Вычисляем сумму радиусов
     float radiusSum = BALL_RADIUS + PLAYER_RADIUS;
 
-    // Проверяем столкновение
-    return distanceSquared <= radiusSum * radiusSum; // Сравниваем с квадратом суммы радиусов
+    return distanceSquared <= radiusSum * radiusSum;
 }
 
 
-// Проверка попадания мяча в ворота
 bool isGoal(const Ball& ball, const sf::RectangleShape& goal) {
     return ball.shape.getGlobalBounds().intersects(goal.getGlobalBounds());
 }
@@ -40,11 +32,11 @@ void checkWallCollision(Ball& ball) {
     }
 }
 
-// Проверка столкновения мяча с нижней границей (земля)
+// Проверка столкновения мяча с землёй)
 void checkGroundCollision(Ball& ball) {
     if (ball.shape.getPosition().y + BALL_RADIUS * 2 >= WINDOW_HEIGHT) {
         ball.shape.setPosition(ball.shape.getPosition().x, WINDOW_HEIGHT - BALL_RADIUS * 2); // Устанавливаем на нижнюю границу
-        ball.velocity.y *= -1; // Отскок вверх
+        ball.velocity.y *= -ENERGY_LOSS; // Отскок вверх
     }
 }
 
@@ -55,5 +47,27 @@ void checkCeilingCollision(Ball& ball) {
     }
 }
 
+//Проверка столкновения игрока со стеной
+void checkPlayerWalls(Player& player){
+    if (player.shape.getPosition().x <= 0) {
+        player.shape.setPosition(0, player.shape.getPosition().y);
+        player.velocity.x = 0;
+    }
+    else if (player.shape.getPosition().x + 2 * PLAYER_RADIUS > WINDOW_WIDTH) {
+        player.shape.setPosition(WINDOW_WIDTH - 2 * PLAYER_RADIUS - 1, player.shape.getPosition().y);
+        player.velocity.x = 0;
+    }
+}
 
-#endif // COLLISION_H
+void checkBallPlayer(Ball& ball, Player& player) {
+    if (isBallCollidingWithPlayer(ball, player)) {
+        sf::Vector2f ballCenter = ball.shape.getPosition() + sf::Vector2f(BALL_RADIUS, BALL_RADIUS);
+        sf::Vector2f playerCenter = player.shape.getPosition() + sf::Vector2f(PLAYER_RADIUS, PLAYER_RADIUS);
+        float dx = ballCenter.x - playerCenter.x;
+        float dy = ballCenter.y - playerCenter.y;
+
+        ball.velocity.x = dx * 8;
+        ball.velocity.y = dy * 8;
+    }
+}
+

@@ -74,7 +74,6 @@ private:
 	}
 
 	void update(float dt) {
-		//ball.applyGravity(dt);
 		ball.update(dt);
 		player1.update(dt);
 		player2.update(dt);
@@ -83,50 +82,42 @@ private:
 	}
 
 	void Check_collisions(float dt) {
-
 		checkCeilingCollision(ball);
 		checkGroundCollision(ball);
 		checkWallCollision(ball);
-	
+		checkPlayerWalls(player1);
+		checkPlayerWalls(player2);
 
-		if (player1.shape.getPosition().x <= 0) {
-			player1.shape.setPosition(0, player1.shape.getPosition().y);
-			player1.velocity.x = 0;
-		}
-		if (player2.shape.getPosition().x + 2*PLAYER_RADIUS > WINDOW_WIDTH) {
-			player2.shape.setPosition(WINDOW_WIDTH - 2*PLAYER_RADIUS - 1, player2.shape.getPosition().y);
-			player2.velocity.x = 0;
-		}
+		checkBallPlayer(ball, player1);
+		checkBallPlayer(ball, player2);
+		//if (isBallCollidingWithPlayer(ball, player1)) {
+		//	sf::Vector2f ballCenter = ball.shape.getPosition() + sf::Vector2f(BALL_RADIUS, BALL_RADIUS);
+		//	sf::Vector2f playerCenter = player1.shape.getPosition() + sf::Vector2f(PLAYER_RADIUS, PLAYER_RADIUS);
 
+		//	float dx = ballCenter.x - playerCenter.x;
+		//	float dy = ballCenter.y - playerCenter.y;
 
-		if (isBallCollidingWithPlayer(ball, player1)) {
-			sf::Vector2f ballCenter = ball.shape.getPosition() + sf::Vector2f(BALL_RADIUS, BALL_RADIUS);
-			sf::Vector2f playerCenter = player1.shape.getPosition() + sf::Vector2f(PLAYER_RADIUS, PLAYER_RADIUS);
-
-			float dx = ballCenter.x - playerCenter.x;
-			float dy = ballCenter.y - playerCenter.y;
-
-			float distance = sqrt(dx * dx + dy * dy);
+		//	float distance = sqrt(dx * dx + dy * dy);
 
 
-			float nx = dx / distance;
-			float ny = dy / distance;
+		//	float nx = dx / distance;
+		//	float ny = dy / distance;
 
-			float dotProduct = ball.velocity.x * nx + ball.velocity.y * ny;
+		//	float dotProduct = ball.velocity.x * nx + ball.velocity.y * ny;
 
-			ball.velocity.x -= 2 * dotProduct * nx;
-			ball.velocity.y -= 2 * dotProduct * ny;
+		//	ball.velocity.x -= 2 * dotProduct * nx;
+		//	ball.velocity.y -= 2 * dotProduct * ny;
 
-			ball.velocity.x += player1.velocity.x;
-			ball.velocity.y += player1.velocity.y;
+		//	ball.velocity.x += player1.velocity.x;
+		//	ball.velocity.y += player1.velocity.y;
 
-			float overlap = (BALL_RADIUS + PLAYER_RADIUS) - distance;
-			if (overlap > 0) {
-				ball.shape.setPosition(ballCenter.x + nx * overlap, ballCenter.y + ny * overlap);
-			}
-		}
+		//	float overlap = (BALL_RADIUS + PLAYER_RADIUS) - distance;
+		//	if (overlap > 0) {
+		//		ball.shape.setPosition(ballCenter.x + nx * overlap, ballCenter.y + ny * overlap);
+		//	}
+		//}
 
-		if (isBallCollidingWithPlayer(ball, player2)) {
+		/*if (isBallCollidingWithPlayer(ball, player2)) {
 			if (ball.shape.getPosition().x < player2.shape.getPosition().x + PLAYER_WIDTH) {
 				ball.velocity.x = -BALL_VELOCITY * ENERGY_LOSS;
 			}
@@ -134,7 +125,7 @@ private:
 				ball.velocity.x = BALL_VELOCITY * ENERGY_LOSS;
 			}
 			ball.velocity.y = -BALL_VELOCITY * ENERGY_LOSS;
-		}
+		}*/
 	}
 
 	void Check_goals() {

@@ -1,4 +1,3 @@
-#pragma once
 #include "player.h"
 
 Player::Player(float x, float y, sf::Color color) {
